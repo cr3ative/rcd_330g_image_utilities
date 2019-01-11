@@ -1,6 +1,0 @@
-kernel_update:0
-bootloader_update:0
-vip_update:0
-bt_update:0
-middleware_update:1
-[file]:[usr]
