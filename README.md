@@ -28,8 +28,8 @@ MD5 (output.bin) = e5574df1f912f97bdd4daa357fcbfd16
 
 So let's not flash these to units just yet. ;)
 
-Credit to `mengxp` for the original image update tarball and bravely discovering mtdblock5.
-Credit to `priZrakinside` via https://www.drive2.com/b/518351288971298058/ for all firmware.
+- Credit to `mengxp` for the original image update tarball and bravely discovering mtdblock5.
+- Credit to `priZrakinside` via https://www.drive2.com/b/518351288971298058/ for all firmware.
 
 Good reading: https://translate.google.com/translate?hl=&sl=auto&tl=en&u=https%3A%2F%2Fwww.drive2.com%2Fb%2F518351288971298058%2F 
 
