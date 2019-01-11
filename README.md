@@ -23,7 +23,8 @@ Currently, we are not generating equal MD5s for files which are meant to be the 
 ```[paulcurry@cr3 ~/Desktop/rcd_330g_logo_utilities](master)$ md5 logo.bin
 MD5 (logo.bin) = 7996a73f577f6d7847c37bb34bc70995
 [paulcurry@cr3 ~/Desktop/rcd_330g_logo_utilities](master)$ md5 output.bin
-MD5 (output.bin) = e5574df1f912f97bdd4daa357fcbfd16```
+MD5 (output.bin) = e5574df1f912f97bdd4daa357fcbfd16
+```
 
 So let's not flash these to units just yet. ;)
 
