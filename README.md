@@ -26,6 +26,9 @@ MD5 (logo.bin) = 7996a73f577f6d7847c37bb34bc70995
 MD5 (output.bin) = e5574df1f912f97bdd4daa357fcbfd16
 ```
 
+Credit to `mengxp` for the original image update tarball and bravely discovering mtdblock5.
+Credit to `priZrakinside` via https://www.drive2.com/b/518351288971298058/ for the Visteon dump, and for `logo.exe`.
+
 So let's not flash these to units just yet. ;)
 
 Cheers!
