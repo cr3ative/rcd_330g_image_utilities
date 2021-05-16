@@ -9,30 +9,11 @@ To run these, first run:
 `pip install Pillow`
 
 Then to convert RCD `logo.bin` file to PNG, run `rcd_to_png.py`
-
 To convert any 800x480 PNG to RCD `logo.bin`, run `png_to_rcd.py`
 
-The included folder `std_plus_pss-6.5inch_logo_vw_orig.tar` contains the default logo, which is a useful example of an example update tarball created by `mengxp`. You can swap the logo.bin out using your favourite `.tar` creating utility.
+I haven't yet flashed any results to my personal RCD330. This is a work in progress, but the BIN conversion works both ways and matches exactly the expected format.
 
-Be warned: This process writes raw block-level data to the firmware of your radio. There's a very realistic chance you'll brick your unit with this, and I take no responsibility for it. It's up to you if you rely on this code or not.
-
-I haven't yet flashed any results to my personal RCD330. This is a work in progress.
-
-Currently, we are not generating equal MD5s for files which are meant to be the same:
-
-```[paulcurry@cr3 ~/Desktop/rcd_330g_logo_utilities](master)$ md5 logo.bin
-MD5 (logo.bin) = 7996a73f577f6d7847c37bb34bc70995
-[paulcurry@cr3 ~/Desktop/rcd_330g_logo_utilities](master)$ md5 output.bin
-MD5 (output.bin) = e5574df1f912f97bdd4daa357fcbfd16
-```
-
-So let's not flash these to units just yet. ;)
-
-- Credit to `mengxp` for the original image update tarball and bravely discovering mtdblock5.
-- Credit to `priZrakinside` via https://www.drive2.com/b/518351288971298058/ for all firmware.
-
-Good reading: https://translate.google.com/translate?hl=&sl=auto&tl=en&u=https%3A%2F%2Fwww.drive2.com%2Fb%2F518351288971298058%2F 
-
-Credit to the users of 4pda.ru, rcd330plus.com and drive2.com for advancing the knowledge on these units.
+- Credit to `mengxp` for the original image update tarball and conversion utility.
+- Credit to @tef and @marksteward for helping me understand XORs!
 
 Cheers!

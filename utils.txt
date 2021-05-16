@@ -1,3 +1,0 @@
-Compare binary files:
-
-diff -y <(xxd logo.bin) <(xxd output.bin) | colordiff
