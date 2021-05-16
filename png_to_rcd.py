@@ -3,16 +3,9 @@ import numpy as np
 import operator
 import functools
 
-# Huge thanks to 4pda.ru and Mark Steward for the pointers
 # RCD330 logo.bin format is raw pixel data, 8-bit RGB, in BGRX order.
 # The dimensions are 800 wide and 480 high.
 # A 3-bit checksum is appended; details are below.
-
-# Requires PIL and numpy, use 'pip install Pillow numpy' to get it
-
-# Name your PNG input.png
-# Then run 'python png_to_rcd.py'
-# We will create output.bin :)
 
 # import image
 img = Image.open('logo.png')
