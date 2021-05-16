@@ -2,11 +2,11 @@
 
 Do you have a Noname (Linux) RCD330G? Do you want a custom boot logo? I might be able to help!
 
-Tested on macOS with Python 2.7.15 (default)
+Tested on macOS/Windows with Python 3 (default)
 
-To run these, first run:
+To run these, you need Pillow and numpy. Install via pip:
 
-`pip install Pillow`
+`pip install Pillow numpy`
 
 Then to convert RCD `logo.bin` file to PNG, run `rcd_to_png.py`
 To convert any 800x480 PNG to RCD `logo.bin`, run `png_to_rcd.py`
