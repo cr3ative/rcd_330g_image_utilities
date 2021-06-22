@@ -23,6 +23,7 @@ I haven't yet flashed any results to my personal RCD330. This is a work in progr
 ### OVG bin files (flags, etc)
 
 * To convert an `_ovg.bin` file to PNG, edit and run `python3 ovg_to_png.py`
+* There's currently no converter from PNG to `_ovg.bin` format, but now that the RLE compression flags are understood, I can do this soon. Or you can! Submit a PR ;)
 
 - Credit to `Niklas_1414` for pushing me to examine these files. Further credits in the python file.
 
