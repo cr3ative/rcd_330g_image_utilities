@@ -8,8 +8,8 @@ To run these, you need Pillow and numpy. Install via pip:
 
 ### Boot logos
 
-* To convert an RCD `logo.bin` file to PNG, edit and run `python3 rcd_to_png.py`
-* To convert any 800x480 PNG to RCD `logo.bin`, run `python3 png_to_rcd.py`
+* To convert an RCD `logo.bin` file to a PNG called `logo.png`, edit and run `python3 rcd_to_png.py`
+* To convert any 800x480 PNG called `logo.png` to RCD `logo.bin`, run `python3 png_to_rcd.py`
 
 I haven't yet flashed any results to my personal RCD330. This is a work in progress, but the BIN conversion works both ways and matches exactly the expected format.
 
