@@ -75,7 +75,7 @@ print(output + ' saved')
 
 # Enable the block below to do fast image size discovery; tweak the range
 # Open the image in an auto refreshing viewer and hit enter until it looks coherent
-if (True):
+if (False):
 
     for autoWidth in range(440, 500, 1):
         # Generate at given width
