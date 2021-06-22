@@ -24,4 +24,6 @@ I haven't yet flashed any results to my personal RCD330. This is a work in progr
 
 * To convert an `_ovg.bin` file to PNG, edit and run `python3 ovg_to_png.py`
 
+- Credit to `Niklas_1414` for pushing me to examine these files. Further credits in the python file.
+
 Cheers!
