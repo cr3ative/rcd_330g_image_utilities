@@ -4,7 +4,7 @@ from numpy import binary_repr
 # Sources used:
 #
 # https://reverseengineering.stackexchange.com/questions/27688/open-unknown-image-format-probably-a-raw-image
-# Ultimately unhelpful in deciphering the command blocks, but useful as they correctly stays 32-bpp RGBA
+# Ian correctly identified 32-bpp RGBA, but the description of the "tag block" was confusing
 #
 # https://www.nxp.com.cn/docs/en/application-note/AN4339.pdf
 # Describes command block and RLE routine
