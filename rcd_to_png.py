@@ -11,7 +11,7 @@ height = 480
 # let's go!
 in_file = open(filename, "rb")  # opening for [r]eading as [b]inary
 data = in_file.read() 
-img = Image.frombytes('RGB', (width, height), data, 'raw', 'BGRX')
+img = Image.frombytes('RGBA', (width, height), data, 'raw', 'BGRA')
 output = "logo.png"
 img.save(output)
 print(output + ' saved')

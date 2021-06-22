@@ -20,6 +20,8 @@ chksumBlue = functools.reduce(operator.xor, np.array([b]).transpose().flatten())
 chksumGreen = functools.reduce(operator.xor, np.array([g]).transpose().flatten())
 # and red
 chksumRed = functools.reduce(operator.xor, np.array([r]).transpose().flatten())
+# and alpha
+chksumAlpha = functools.reduce(operator.xor, np.array([a]).transpose().flatten())
 
 # img output
 data = np.array([b, g, r, a])
@@ -29,12 +31,11 @@ bgrArray = bgrData.flatten()
 f = open('./output.bin', 'wb')
 # B G R A ordered data
 f.write(bgrArray)
-# pixel colour checksums
+# pixel checksums
 f.write(chksumBlue)
 f.write(chksumGreen)
 f.write(chksumRed)
-# 1 byte of empty padding
-f.write(bytes(1))
+f.write(chksumAlpha)
 f.close()
 
 print('output.bin saved')

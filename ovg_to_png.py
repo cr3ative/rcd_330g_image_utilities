@@ -10,9 +10,9 @@ from numpy import binary_repr
 # Describes command block and RLE routine
 
 # variables; adjust me
-filename = "example_bins/mex_ovg.bin"
-width = 39
-height = 39
+filename = "example_bins/ops_ovg.bin"
+width = 172
+# height automatically calculated
 
 # First, deal with RLE compression as defined by the NXP PDF above
 
@@ -61,8 +61,26 @@ while cmd:
         # Read next command block
         cmd = file.read(1)
 
+totalPixels = int(len(bytesOut) / 4)
+print(f"Image data contains {totalPixels} pixels")
+height = int(totalPixels / width)
+print(f"Calculated as {width}x{height}")
+
 # Cast RGBX byte stream to image using Pillow
-image = Image.frombytes('RGB', (width, height), bytes(bytesOut), 'raw', 'RGBX')
-output = "logo.png"
+image = Image.frombytes('RGBA', (width, height), bytes(bytesOut), 'raw', 'RGBA')
+
+output = "ovg.png"
 image.save(output)
 print(output + ' saved')
+
+# Enable the block below to do fast image size discovery; tweak the range
+# Open the image in an auto refreshing viewer and hit enter until it looks coherent
+if (True):
+
+    for autoWidth in range(440, 500, 1):
+        # Generate at given width
+        autoHeight = int(totalPixels / autoWidth)
+        image = Image.frombytes('RGBA', (autoWidth, autoHeight), bytes(bytesOut), 'raw', 'RGBA')
+        output = "ovg.png"
+        image.save(output)
+        input(f"Saved at {autoWidth} x {autoHeight} - press enter to continue...")
