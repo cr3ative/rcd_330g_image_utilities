@@ -1,8 +1,4 @@
-# RCD330 Logo Utilities
-
-Do you have a Noname (Linux) RCD330G? Do you want a custom boot logo? I might be able to help!
-
-Tested on macOS/Windows with Python 3 (default)
+# RCD330 Image Utilities
 
 To run these, you need Pillow and numpy. Install via pip:
 
