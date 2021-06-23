@@ -1,6 +1,6 @@
 # RCD330 Image Utilities
 
-To run these, you need Pillow and numpy. Install via pip:
+Python 3 only because who uses 2 any more? Nerds, that's who. To run these, you need Pillow and numpy. Install via pip:
 
 `pip install Pillow numpy`
 
