@@ -52,6 +52,8 @@ def construct_bitstream(count, pixels, compressed):
 
 def pixels_to_binary(pixel):
     # 0 opacity black -> 0 opacity white
+    # this is just a difference in how PIL and whatever encoded the RCD OVGs handles completely transparent pixels
+    # we're confirming to the RCD "standard" so we get identical output files
     r = pixel[0]
     g = pixel[1]
     b = pixel[2]
