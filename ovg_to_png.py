@@ -10,8 +10,8 @@ from numpy import binary_repr
 # Describes command block and RLE routine
 
 # variables; adjust me
-filename = "example_bins/ops_ovg.bin"
-width = 172
+filename = "example_bins/mex_ovg.bin"
+width = 39
 # height automatically calculated
 
 # First, deal with RLE compression as defined by the NXP PDF above
@@ -36,12 +36,12 @@ while cmd:
         gPixel = ord(file.read(1))
         bPixel = ord(file.read(1))
         aPixel = ord(file.read(1))
+        # print(f"{pixels} pixels of [{rPixel}, {gPixel}, {bPixel}, {aPixel}] added to the array.")
         for x in range(pixels):
             bytesOut.append(rPixel)
             bytesOut.append(gPixel)
             bytesOut.append(bPixel)
             bytesOut.append(aPixel)
-            # print(f"{pixels} pixels of [{rPixel}, {gPixel}, {bPixel}, {aPixel}] added to the array.")
         # Read next command block
         cmd = file.read(1)
     else:

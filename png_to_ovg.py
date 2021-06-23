@@ -1,4 +1,3 @@
-import numpy as np
 from PIL import Image
 from numpy import binary_repr
 from io import StringIO
@@ -8,6 +7,7 @@ from io import StringIO
 # Credits/sources in ovg_to_png.py
 
 filename = "ovg.png"
+outfile = "output.ovg"
 
 finalBytes = b""
 
@@ -17,16 +17,15 @@ def bitstring_to_bytes(s):
 
 
 def output_bitstream(pixels, compressed, cmdBlock):
-    print(f"Bitstream {compressed}: {cmdBlock} // {pixels}")
-    print(bitstring_to_bytes(f"{cmdBlock}{pixels}"))
+    # print(f"Bitstream {compressed}: {cmdBlock} // {pixels}")
+    # print(bitstring_to_bytes(f"{cmdBlock}{pixels}"))
     global finalBytes
     finalBytes = finalBytes + bitstring_to_bytes(f"{cmdBlock}{pixels}")
 
 
 # todo: pixels to be a list we can iterate through
 def construct_bitstream(count, pixels, compressed):
-    count = count - 1  # pdf spec fix
-    print(f"Pixel input: {count}, {pixels}, {compressed}")
+    # print(f"Pixel input: {count}, {pixels}, {compressed}")
     # Make it a string we can read like a file
     sio = StringIO(pixels)
     # Figure out our overflow (127, spoilers)
@@ -39,16 +38,16 @@ def construct_bitstream(count, pixels, compressed):
         else:
             bitsOut = sio.read(binary_max * 4)  # 32bpp RRGGBBAA
         output_bitstream(bitsOut, compressed, cmdBlock)
-        count = count - binary_max
+        count = count - binary_max - 1
     # If any are left after that, output them too
     # fixme: just do this in the loop above?
     if count > 0:
-        cmdBlock = str(compressed) + binary_repr(count, 7)
+        cmdBlock = str(compressed) + binary_repr(count - 1, 7)
         if compressed:
             bitsOut = pixels
         else:
             bitsOut = sio.read(count * 32)  # 32bpp RRGGBBAA
-            print(f"Bitsout: {bitsOut}, Count: {count * 32}")
+            # print(f"Bitsout: {bitsOut}, Count: {count * 32}")
         output_bitstream(bitsOut, compressed, cmdBlock)
 
 
@@ -58,7 +57,7 @@ def pixels_to_binary(pixel):
     g = pixel[1]
     b = pixel[2]
     a = pixel[3]
-    if r == 0 & g == 0 & b == 0 & a == 0:
+    if r == 0 and g == 0 and b == 0 and a == 0:
         r = 255
         g = 255
         b = 255
@@ -81,38 +80,52 @@ uniqueCount = 0
 uniqueOutput = ""
 
 # Loop over every pixel in the loaded image
-for pixel in pixels:
-    # Pixel was the same. Add to the tally.
+for pixelIndex in range(len(pixels)):
+    pixel = pixels[pixelIndex]
+    # print(pixel)
     if pixel == lastPixel:
+        # A repeat.
         repeatCount = repeatCount + 1
-        continue
-    # A new pixel colour!
-    if repeatCount == 0:
-        # First pixel of the image; record it
-        lastPixel = pixel
-        continue
-    if repeatCount > 2:
         if uniqueCount > 0:
-            # We just ended a run of unique pixels.
-            print(f"> {uniqueCount}\t unique pixels ready - needs pixel count but no RLE repeat flag")
-            # Construct output
+            # print(f"ended a run of uniques. there were {uniqueCount} unique pixels: {uniqueOutput}")
             construct_bitstream(uniqueCount, uniqueOutput, 0)
-            # Reset unique accumulators
-            uniqueOutput = ""
             uniqueCount = 0
-            continue
-        # We just ended a run of repeated pixels
-        print(f"> {repeatCount}\t repeat pixels of {pixel} ready - needs pixel count and RLE repeat flag")
-        # Construct output
-        construct_bitstream(repeatCount, pixels_to_binary(pixel), 1)
-        repeatCount = 0
-        continue
-    # This is a unique pixel; start a run of uniques
-    uniqueCount = uniqueCount + 1
-    # Concatenate and construct output
-    uniqueOutput = f"{uniqueOutput}{pixels_to_binary(pixel)}"
-    repeatCount = 0
+    else:
+        # A new pixel.
+        if pixelIndex > 0:
+            uniqueCount = uniqueCount + 1
+            nextUnique = pixels[pixelIndex - 1]
+            # print(f"unique added: {pixelIndex} {nextUnique}")
+            uniqueOutput = f"{uniqueOutput}{pixels_to_binary(nextUnique)}"
+        # Now, what to do with that information. Were we previously on a roll?
+        if repeatCount > 0:
+            repeatCount = repeatCount + 1
+            # print(f"ended a run of repeats. there were {repeatCount} repeated pixels of {lastPixel} - {pixels_to_binary(lastPixel)}.")
+            construct_bitstream(repeatCount, pixels_to_binary(lastPixel), 1)
+            # end run
+            repeatCount = 0
+            # was not unique
+            uniqueCount = 0
+            uniqueOutput = ""
+    lastPixel = pixel
 
-f = open("output.ovg", "wb")
+# loop ended. check accumulators
+# fixme: dry
+if repeatCount > 0:
+    repeatCount = repeatCount + 1
+    # print(f"ended a run of repeats. there were {repeatCount} repeated pixels of {lastPixel} - {pixels_to_binary(lastPixel)}.")
+    construct_bitstream(repeatCount, pixels_to_binary(lastPixel), 1)
+    # end run
+    repeatCount = 0
+    # was not unique
+    uniqueCount = 0
+    uniqueOutput = ""
+if uniqueCount > 0:
+    # print(f"ended a run of uniques. there were {uniqueCount} unique pixels: {uniqueOutput}")
+    construct_bitstream(uniqueCount, uniqueOutput, 0)
+    uniqueCount = 0
+
+f = open(outfile, "wb")
+print(f"saved as {outfile}")
 f.write(finalBytes)
 f.close()
