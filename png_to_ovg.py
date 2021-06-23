@@ -1,9 +1,8 @@
 from PIL import Image
-from numpy import binary_repr, unique
+from numpy import binary_repr
 from io import StringIO
 
-# Work in progress! Doesn't work yet at all.
-
+# Works for the mexican flag - not thoroughly tested
 # Credits/sources in ovg_to_png.py
 
 filename = "ovg.png"
