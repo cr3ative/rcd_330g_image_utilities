@@ -22,7 +22,6 @@ def output_bitstream(pixels, compressed, cmdBlock):
     finalBytes = finalBytes + bitstring_to_bytes(f"{cmdBlock}{pixels}")
 
 
-# todo: pixels to be a list we can iterate through
 def construct_bitstream(count, pixels, compressed):
     # print(f"Pixel input: {count}, {pixels}, {compressed}")
     # Make it a string we can read like a file
@@ -39,7 +38,6 @@ def construct_bitstream(count, pixels, compressed):
         output_bitstream(bitsOut, compressed, cmdBlock)
         count = count - binary_max - 1
     # If any are left after that, output them too
-    # fixme: just do this in the loop above?
     if count > 0:
         cmdBlock = str(compressed) + binary_repr(count - 1, 7)
         if compressed:
