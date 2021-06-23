@@ -35,7 +35,7 @@ def construct_bitstream(count, pixels, compressed):
         if compressed:
             bitsOut = pixels
         else:
-            bitsOut = sio.read(binary_max * 4)  # 32bpp RRGGBBAA
+            bitsOut = sio.read(binary_max * 32)  # 32bpp RRGGBBAA
         output_bitstream(bitsOut, compressed, cmdBlock)
         count = count - binary_max - 1
     # If any are left after that, output them too
