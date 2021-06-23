@@ -1,5 +1,5 @@
 from PIL import Image
-from numpy import binary_repr
+from numpy import binary_repr, unique
 from io import StringIO
 
 # Work in progress! Doesn't work yet at all.
@@ -79,39 +79,9 @@ repeatCount = 0
 uniqueCount = 0
 uniqueOutput = ""
 
-# Loop over every pixel in the loaded image
-for pixelIndex in range(len(pixels)):
-    pixel = pixels[pixelIndex]
-    # print(pixel)
-    if pixel == lastPixel:
-        # A repeat.
-        repeatCount = repeatCount + 1
-        if uniqueCount > 0:
-            # print(f"ended a run of uniques. there were {uniqueCount} unique pixels: {uniqueOutput}")
-            construct_bitstream(uniqueCount, uniqueOutput, 0)
-            uniqueCount = 0
-    else:
-        # A new pixel.
-        if pixelIndex > 0:
-            uniqueCount = uniqueCount + 1
-            nextUnique = pixels[pixelIndex - 1]
-            # print(f"unique added: {pixelIndex} {nextUnique}")
-            uniqueOutput = f"{uniqueOutput}{pixels_to_binary(nextUnique)}"
-        # Now, what to do with that information. Were we previously on a roll?
-        if repeatCount > 0:
-            repeatCount = repeatCount + 1
-            # print(f"ended a run of repeats. there were {repeatCount} repeated pixels of {lastPixel} - {pixels_to_binary(lastPixel)}.")
-            construct_bitstream(repeatCount, pixels_to_binary(lastPixel), 1)
-            # end run
-            repeatCount = 0
-            # was not unique
-            uniqueCount = 0
-            uniqueOutput = ""
-    lastPixel = pixel
 
-# loop ended. check accumulators
-# fixme: dry
-if repeatCount > 0:
+def terminate_repeats():
+    global repeatCount, uniqueOutput, uniqueCount
     repeatCount = repeatCount + 1
     # print(f"ended a run of repeats. there were {repeatCount} repeated pixels of {lastPixel} - {pixels_to_binary(lastPixel)}.")
     construct_bitstream(repeatCount, pixels_to_binary(lastPixel), 1)
@@ -120,11 +90,45 @@ if repeatCount > 0:
     # was not unique
     uniqueCount = 0
     uniqueOutput = ""
-if uniqueCount > 0:
+
+
+def terminate_uniques():
+    global uniqueCount
     # print(f"ended a run of uniques. there were {uniqueCount} unique pixels: {uniqueOutput}")
     construct_bitstream(uniqueCount, uniqueOutput, 0)
     uniqueCount = 0
 
+
+# Loop over every pixel in the loaded image
+for pixelIndex in range(len(pixels)):
+    pixel = pixels[pixelIndex]
+    if pixelIndex == 0:
+        # Do nothing if it's the very first pixel of the document
+        pass
+    elif pixel == lastPixel:
+        # A repeat.
+        repeatCount = repeatCount + 1
+        # Which means if we were on a run of uniques, that's ended
+        if uniqueCount > 0:
+            terminate_uniques()
+    else:
+        # A unique pixel - haven't seen it before
+        uniqueCount = uniqueCount + 1
+        # Add the previous pixel to the unique output array
+        previousUnique = pixels[pixelIndex - 1]
+        uniqueOutput = f"{uniqueOutput}{pixels_to_binary(previousUnique)}"
+        # Which means if we were on a run of repeats, that's ended
+        if repeatCount > 0:
+            terminate_repeats()
+    lastPixel = pixel
+
+# loop ended. empty any remaining accumulations
+if repeatCount > 0:
+    terminate_repeats()
+if uniqueCount > 0:
+    terminate_uniques()
+
+# Save it out
 f = open(outfile, "wb")
 print(f"saved as {outfile}")
 f.write(finalBytes)
