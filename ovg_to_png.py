@@ -10,14 +10,27 @@ from numpy import binary_repr
 # Describes command block and RLE routine
 
 # variables; adjust me
-filename = "example_bins/mex_ovg.bin"
+filename = "mex_ovg"
+calculate_height = True  # change to false for calclulating width
 width = 39
-# height automatically calculated
+height = 39 # height automatically calculated, when calculate_height = True
+
+# Set image_size_discovery to True, to do fast image size discovery; tweak the range
+# Open the image in an auto refreshing viewer and hit enter until it looks coherent
+image_size_discovery = False
+discovery_width_min = 35
+discovery_width_max = 45
+discovery_width_step = 1
+
+# folders
+source_path = "example_bins/"  # e.g. "sourcefolder/"
+output_path = ""  # e.g. "outputfolder/"
+
 
 # First, deal with RLE compression as defined by the NXP PDF above
 
 bytesOut = bytearray()
-file = open(filename, "rb")  # opening for [r]eading as [b]inary
+file = open(source_path+filename+".bin", "rb")  # opening for [r]eading as [b]inary
 # Read out the command block (1 byte)
 cmd = file.read(1)
 while cmd:
@@ -63,24 +76,25 @@ while cmd:
 
 totalPixels = int(len(bytesOut) / 4)
 print(f"Image data contains {totalPixels} pixels")
-height = int(totalPixels / width)
+if (calculate_height):
+	height = int(totalPixels / width)
+else:
+	width = int(totalPixels / height)
 print(f"Calculated as {width}x{height}")
 
 # Cast RGBX byte stream to image using Pillow
 image = Image.frombytes('RGBA', (width, height), bytes(bytesOut), 'raw', 'RGBA')
 
-output = "ovg.png"
-image.save(output)
-print(output + ' saved')
+image.save(output_path+filename+".png")
+print(filename + '.png saved')
 
-# Enable the block below to do fast image size discovery; tweak the range
-# Open the image in an auto refreshing viewer and hit enter until it looks coherent
-if (False):
+# fast image size discovery
+if (image_size_discovery):
 
-    for autoWidth in range(440, 500, 1):
+    for autoWidth in range(discovery_width_min, discovery_width_max+1, discovery_width_step):
         # Generate at given width
         autoHeight = int(totalPixels / autoWidth)
         image = Image.frombytes('RGBA', (autoWidth, autoHeight), bytes(bytesOut), 'raw', 'RGBA')
         output = "ovg.png"
-        image.save(output)
+        image.save(output_path+filename+".png")
         input(f"Saved at {autoWidth} x {autoHeight} - press enter to continue...")
